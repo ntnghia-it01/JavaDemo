@@ -1,0 +1,64 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="mt-3 mb-3">
+      <a name="" id="" class="btn btn-primary" href="/add-user" role="button">Add User</a>
+
+    </div>
+    <div class="table-responsive">
+      <table class="table table-primary">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Password</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Active</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <th:block th:each="item : ${users}">
+            <tr>
+              <td th:text="${item.id}"></td>
+              <td th:text="${item.username}"></td>
+              <td th:text="${item.password}"></td>
+              <td th:text="${item.name}"></td>
+              <td th:text="${item.email}"></td>
+              <!-- Active if active == 1 => "Active" : "Blocked" -->
+              <td th:text="${item.active ? 'Active' : 'Blocked'}"></td>
+              <!-- Role if role == 0 => "Admin" : "User" -->
+              <td th:text="${item.role == 0 ? 'Admin' : 'User'}"></td>
+            </tr>
+          </th:block>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

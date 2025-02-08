@@ -1,0 +1,78 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+</head>
+
+<body>
+
+  <div class="container">
+    <ul th:object="${student}">
+      <li th:text="*{code}"></li>
+      <li th:text="${student.name}"></li>
+      <li th:text="${student.className}"></li>
+      <li th:text="${student.mark}"></li>
+      <!-- th:if th:unless -->
+      <li th:if="${student.mark >= 5}">Pass mon</li>
+      <li th:unless="${student.mark >= 5}">Fail mon</li>
+
+      <!-- Toan tu bac ba -->
+      <li th:text="${student.mark >= 5 ? 'Pass mon' : 'Fail mon'}"></li>
+
+      <!-- Ktra diem neu lon hon hoac bang 5 => "Pass mon" -->
+      <!-- Nguoc lai => "Fail mon" -->
+    </ul>
+
+    <div class="mt-5">
+      <div class="table-responsive">
+        <table class="table table-primary">
+          <thead>
+            <tr>
+              <th scope="col">Code</th>
+              <th scope="col">Name</th>
+              <th scope="col">Class</th>
+              <th scope="col">Mark</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <th:block th:each="item : ${students}">
+              <tr>
+                <td th:text="${item.code}"></td>
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.className}"></td>
+                <td th:text="${item.mark}"></td>
+                <td th:text="${item.mark >= 5 ? 'Pass mon' : 'Fail mon'}"></td>
+              </tr>
+            </th:block>
+
+            <!-- <tr class="">
+              <td scope="row">R1C1</td>
+              <td>R1C2</td>
+              <td>R1C3</td>
+            </tr> -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

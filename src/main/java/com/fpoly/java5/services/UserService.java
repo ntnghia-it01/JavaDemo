@@ -1,0 +1,58 @@
+package com.fpoly.java5.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.fpoly.java5.beans.UserBean;
+import com.fpoly.java5.entities.UserEntity;
+import com.fpoly.java5.jpas.UserJPA;
+
+@Service
+public class UserService {
+  
+  @Autowired
+  UserJPA userJPA;
+
+  @Autowired
+  ImageService imageService;
+
+  public String insertUser(UserBean userBean){
+    try{
+
+      // username hoặc email tồn tại
+
+      List<UserEntity> users = userJPA.findByUsernameOrEmail(userBean.getUsername(), userBean.getEmail());
+
+      if(users.size() > 0){
+        return "Username hoặc email đã tồn tại";
+      }
+
+      String fileName = imageService.saveImage(userBean.getAvatar());
+
+      if(fileName == null){
+        return "imgae err";
+      }
+
+      // pass error => save image => image name
+
+
+      UserEntity userEntity = new UserEntity();
+      userEntity.setUsername(userBean.getUsername());
+      userEntity.setPassword(userBean.getPassword());
+      userEntity.setName(userBean.getName());
+      userEntity.setEmail(userBean.getEmail());
+      userEntity.setActive(true);
+      userEntity.setRole(1);
+      userEntity.setAvatar(fileName);
+
+      userJPA.save(userEntity);
+
+    }catch(Exception e){
+      return "Có lỗi khi thêm user";
+    }
+
+    return null;
+  }
+}
