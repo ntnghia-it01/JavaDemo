@@ -1,6 +1,7 @@
 package com.fpoly.java5.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,21 @@ public class UserService {
     }
 
     return null;
+  }
+
+  public boolean deleteUser(int id){
+    try{
+      Optional<UserEntity> user = userJPA.findById(id);
+      if(!user.isPresent()){
+        return false; 
+      }
+
+      userJPA.delete(user.get());
+      
+    }catch(Exception e){
+      return false;
+    }
+
+    return true;
   }
 }

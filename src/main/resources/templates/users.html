@@ -30,6 +30,7 @@
             <th scope="col">Email</th>
             <th scope="col">Active</th>
             <th scope="col">Role</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -44,6 +45,14 @@
               <td th:text="${item.active ? 'Active' : 'Blocked'}"></td>
               <!-- Role if role == 0 => "Admin" : "User" -->
               <td th:text="${item.role == 0 ? 'Admin' : 'User'}"></td>
+              <td class="d-flex gap-3">
+                <!-- Đổi thông tin href của thẻ a với định dạng /add-user?id=${item.id} -->
+                <a class="btn btn-primary w-auto" th:href="${'/add-user?id=' + item.id}" role="button">Update</a>
+                <form method="post" action="/delete-user">
+                  <input name="id" th:value="${item.id}" type="hidden"/>
+                  <input class="btn btn-danger w-auto" href="#" type="submit" value="Delete"/>
+                </form>
+              </td>
             </tr>
           </th:block>
         </tbody>
