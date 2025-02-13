@@ -46,16 +46,30 @@ public class UserController {
         // @RequestParam(name = "id", defaultValue = "0") int id
         // @RequestParam(name = "id", required = false) int id
     ){
+        
         // Nếu có truyền id qua
         // Đổi tên và button add user => update user
         // Hiển thị thông tin user từ db thông qua id ở các ô input
         // Về nhà giải quyết
 
+        UserBean userBean = new UserBean();
         if(id.isPresent()){
             // find by id user db
-            // attr qua html
-        }
+            Optional<UserEntity> userOptional = userJPA.findById(id.get());
 
+            // convert entity to bean
+            // Kiểm tra có userEntity không
+            // Set giá trị từ entity qua bean (userBean)
+
+            if(userOptional.isPresent()){
+                userBean.setId(id);
+                userBean.setUsername(userOptional.get().getUsername());
+                userBean.setPassword(userOptional.get().getPassword());
+                userBean.setName(userOptional.get().getName());
+                userBean.setEmail(userOptional.get().getEmail());
+            }
+        }
+        model.addAttribute("user", userBean);
         return "/user-form.html";
     }
 
@@ -78,7 +92,13 @@ public class UserController {
 
         // handle
 
-        String result = userService.insertUser(userBean);
+        String result;
+
+        if(userBean.getId().isPresent()){
+            result = userService.updateUser(userBean);
+        }else{
+            result = userService.insertUser(userBean);
+        }
 
         if(result == null){
             return "redirect:/users";

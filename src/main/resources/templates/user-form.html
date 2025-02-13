@@ -19,25 +19,29 @@
         <h1>Add User</h1>
         <div th:text="${error}"></div>
       </div>
-      <form method="post" action="/add-user" enctype="multipart/form-data">
+      <form th:object="${user}" method="post" action="/add-user" enctype="multipart/form-data">
+        <th:block th:if="*{id != null}">
+          <input type="hidden" th:value="*{id.get()}"/>
+        </th:block>
+
         <div class="mb-3">
           <label for="" class="form-label">Username</label>
-          <input type="text" class="form-control" name="username" />
+          <input th:value="*{username}" type="text" class="form-control" name="username" />
         </div>
 
         <div class="mb-3">
           <label for="" class="form-label">Password</label>
-          <input type="password" class="form-control" name="password" />
+          <input th:value="*{password}" type="password" class="form-control" name="password" />
         </div>
 
         <div class="mb-3">
           <label for="" class="form-label">Email</label>
-          <input type="text" class="form-control" name="email" />
+          <input th:value="*{email}" type="text" class="form-control" name="email" />
         </div>
 
         <div class="mb-3">
           <label for="" class="form-label">Name</label>
-          <input type="text" class="form-control" name="name" />
+          <input th:value="*{name}" type="text" class="form-control" name="name" />
         </div>
 
         <div class="mb-3">

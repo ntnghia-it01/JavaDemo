@@ -14,4 +14,11 @@ public interface UserJPA extends JpaRepository<UserEntity, Integer>{
 
   @Query(value = "SELECT * FROM users WHERE username=?1 OR email=?2", nativeQuery = true)
   public List<UserEntity> findByUsernameOrEmail(String username, String email);
+
+  // SELECT * FROM users 
+  // WHERE (username='admin' OR email='admin@gmail.com') 
+  // AND id != 2
+
+  @Query(value =  "SELECT * FROM users WHERE (username=?1 OR email=?2) AND id != ?3", nativeQuery = true)
+  public List<UserEntity> findByUsernameOrEmailAndId(String username, String email, int id);
 }

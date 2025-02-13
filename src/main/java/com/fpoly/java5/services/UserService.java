@@ -72,4 +72,42 @@ public class UserService {
 
     return true;
   }
+
+  public String updateUser(UserBean userBean){
+    try{
+
+      List<UserEntity> users = userJPA.findByUsernameOrEmailAndId(
+        userBean.getUsername(),
+        userBean.getEmail(),
+        userBean.getId().get()
+      );
+
+      if(users.size() > 0){
+        return "Username hoặc email đã tồn tại";
+      }
+
+      String fileName = imageService.saveImage(userBean.getAvatar());
+
+      if(fileName == null){
+        return "imgae err";
+      }
+
+      UserEntity userEntity = new UserEntity();
+      userEntity.setId(userBean.getId().get());
+      userEntity.setUsername(userBean.getUsername());
+      userEntity.setPassword(userBean.getPassword());
+      userEntity.setName(userBean.getName());
+      userEntity.setEmail(userBean.getEmail());
+      userEntity.setActive(true);
+      userEntity.setRole(1);
+      userEntity.setAvatar(fileName);
+
+      userJPA.save(userEntity);
+
+    }catch(Exception e){
+      return "Có lỗi khi cập nhật user";
+    }
+
+    return null;
+  }
 }

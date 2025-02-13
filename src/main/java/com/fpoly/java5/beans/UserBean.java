@@ -1,5 +1,7 @@
 package com.fpoly.java5.beans;
 
+import java.util.Optional;
+
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserBean {
+  private Optional<Integer> id;
   // Không rỗng
   @NotBlank(message = "Username không rỗng")
   private String username;
