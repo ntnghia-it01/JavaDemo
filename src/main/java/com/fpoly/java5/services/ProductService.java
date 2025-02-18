@@ -65,4 +65,14 @@ public class ProductService {
 
     return true;
   }
+
+  public boolean deleteProduct(int id){
+    try{
+      imageJPA.deleteByProdId(id);
+      productJPA.deleteById(id);
+    }catch(Exception e){
+      return false;
+    }
+    return true;
+  }
 }

@@ -28,15 +28,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="">
-            <td>R1C2</td>
-            <td>R1C3</td>
-            <td>R1C2</td>
-            <td>R1C3</td>
-            <td>R1C2</td>
-            <td>R1C3</td>
-            <td>R1C3</td>
-          </tr>
+          <th:block th:each="item : ${products}">
+            <tr class="">
+              <td th:text="${item.id}"></td>
+              <td th:text="${item.name}"></td>
+              <td th:text="${item.desc}"></td>
+              <td th:text="${item.price}"></td>
+              <td th:text="${item.quantity}"></td>
+              <td th:text="${item.category.name}"></td>
+              <td>
+                <img style="width: 100px; height: 100px;"
+                  th:src="${'/images/' + item.images.get(0).image}"/>
+              </td>
+            </tr>
+          </th:block>
         </tbody>
       </table>
     </div>
