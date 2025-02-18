@@ -30,7 +30,7 @@ public class Product {
   @Column(name = "name", nullable = false, columnDefinition = "nvarchar(max)")
   private String name;
 
-  @Column(name = "desc", nullable = false, columnDefinition = "ntext")
+  @Column(name = "description", nullable = false, columnDefinition = "nvarchar(max)")
   private String desc;
 
   @Column(name = "price", nullable = false)
