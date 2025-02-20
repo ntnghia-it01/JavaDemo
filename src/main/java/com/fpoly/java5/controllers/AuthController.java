@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fpoly.java5.beans.LoginBean;
+import com.fpoly.java5.services.UserService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -19,6 +20,9 @@ public class AuthController {
 
   @Autowired
   HttpServletResponse response;
+
+  @Autowired
+  UserService userService;
 
   @GetMapping("/login")
   public String login() {
@@ -53,13 +57,15 @@ public class AuthController {
       return "/login.html";
     }
 
-    if(loginBean.getUsername().equals("admin") && loginBean.getPassword().equals("admin")){
-      return "redirect:/";
-    }
+    boolean checkLogin = userService.checkLogin(loginBean.getUsername(), loginBean.getPassword());
 
-    if(loginBean.getUsername().equals("user") && loginBean.getPassword().equals("user")){
-      return "redirect:/user";
-    }
+    // if(){
+    //   return "redirect:/";
+    // }
+
+    // if(loginBean.getUsername().equals("user") && loginBean.getPassword().equals("user")){
+    //   return "redirect:/user";
+    // }
 
     return "/login.html";
 

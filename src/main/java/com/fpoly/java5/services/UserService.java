@@ -10,6 +10,9 @@ import com.fpoly.java5.beans.UserBean;
 import com.fpoly.java5.entities.UserEntity;
 import com.fpoly.java5.jpas.UserJPA;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Service
 public class UserService {
   
@@ -18,6 +21,9 @@ public class UserService {
 
   @Autowired
   ImageService imageService;
+
+  @Autowired
+  HttpServletResponse response;
 
   public String insertUser(UserBean userBean){
     try{
@@ -109,5 +115,38 @@ public class UserService {
     }
 
     return null;
+  }
+
+  // Xây dựng hàm đăng nhập 
+  // Sau khi đăng nhập thành công
+  // Lưu user id và role vào cookie
+
+  public boolean checkLogin(String username, String password){
+    try{
+      // WHERE username='abc' AND password='abc'
+      // WHERE username='abc'
+
+      Optional<UserEntity> userOptional = userJPA.findByUsername(username);
+
+      if(!userOptional.isPresent()){
+        return false;
+      }
+
+      if(!userOptional.get().getPassword().equals(password)){
+        return false;
+      }
+
+      Cookie cookieUserId = new Cookie("user_id", String.valueOf(userOptional.get().getId()));
+      cookieUserId.setMaxAge(60 * 60 * 10);
+      Cookie cookieUserRole = new Cookie("user_role", String.valueOf(userOptional.get().getRole()));
+      cookieUserRole.setMaxAge(60 * 60 * 10);
+
+      response.addCookie(cookieUserId);
+      response.addCookie(cookieUserRole);
+
+    }catch(Exception e){
+      return false;
+    }
+    return true;
   }
 }

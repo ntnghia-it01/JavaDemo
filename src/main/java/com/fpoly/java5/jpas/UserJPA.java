@@ -10,7 +10,8 @@ import com.fpoly.java5.entities.UserEntity;
 
 public interface UserJPA extends JpaRepository<UserEntity, Integer>{
   // Select find by username
-  // public Optional<UserEntity> findByUsername(String username);
+  @Query(value = "SELECT * FROM users WHERE username=?1", nativeQuery = true)
+  public Optional<UserEntity> findByUsername(String username);
 
   @Query(value = "SELECT * FROM users WHERE username=?1 OR email=?2", nativeQuery = true)
   public List<UserEntity> findByUsernameOrEmail(String username, String email);
