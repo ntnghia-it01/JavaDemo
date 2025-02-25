@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.fpoly.java5.entities.CartEntity;
 import com.fpoly.java5.entities.CartItemEntity;
+import com.fpoly.java5.entities.Product;
 import com.fpoly.java5.entities.UserEntity;
+import com.fpoly.java5.jpas.CartItemJPA;
 import com.fpoly.java5.jpas.CartJPA;
+import com.fpoly.java5.jpas.ProductJPA;
 import com.fpoly.java5.jpas.UserJPA;
 
 import jakarta.servlet.http.Cookie;
@@ -27,6 +30,12 @@ public class CartService {
 
   @Autowired
   UserJPA userJPA;
+
+  @Autowired
+  CartItemJPA cartItemJPA;
+
+  @Autowired
+  ProductJPA productJPA;
 
   private UserEntity getUserEntity(){
     Cookie[] cookies = request.getCookies();
@@ -65,12 +74,39 @@ public class CartService {
   }
 
   public boolean addToCart(int prodId){
-    CartEntity cartEntity = this.getCart();
+    
 
     // Cách 1:
     // Viết JPA cart item where prod_id and cart_id => thực thi 1 lệnh sql
     // Kiểm tra nếu không có insert => thực hiện kiểm tra 1
     // Nếu có tăng quantity + 1 update
+
+    try{
+      CartEntity cartEntity = this.getCart();
+      Optional<CartItemEntity> cartItemOptional = cartItemJPA.findByCartIdAndProdId(cartEntity.getId(), prodId);
+
+      if(cartItemOptional.isPresent()){
+        // cartItemOptional.get().getQuantity() + 1 <= product.quantity
+
+        // Có tồn tại sản phẩm trong giỏ hàng
+        CartItemEntity cartItemEntity = cartItemOptional.get();
+        cartItemEntity.setQuantity(cartItemOptional.get().getQuantity() + 1);
+
+        cartItemJPA.save(cartItemEntity);
+      }else{
+        CartItemEntity cartItemEntity = new CartItemEntity();
+        cartItemEntity.setQuantity(1);
+        cartItemEntity.setCart(cartEntity);
+        Optional<Product> productOptional = productJPA.findById(prodId);
+        if(!productOptional.isPresent()){
+          return false;
+        }
+        cartItemEntity.setProduct(productOptional.get());
+        cartItemJPA.save(cartItemEntity);
+      }
+    }catch(Exception e){
+      return false;
+    }
 
     // Cách 2:
     // Từ cart entity get list item => thực thi 1 lệnh sql
@@ -84,12 +120,25 @@ public class CartService {
   }
 
   public boolean deleteCartItem(int cartItemId){
+    try{
+      CartEntity cartEntity = this.getCart();
+      Optional<CartItemEntity> cartItemOptional = cartItemJPA.findByCartIdAndId(cartEntity.getId(), cartItemId);
 
+      if(cartItemOptional.isPresent()){
+        cartItemJPA.deleteById(cartItemId);
+      }
+    }catch(Exception e){
+      return false;
+    }
     return true;
   }
 
   public boolean updateQuantityCartItem(int cartItemId, int quantity){
-
+    try{
+      // Optional<CartItemEntity> cartItemOptional = cartItemJPA
+    }catch(Exception e){
+      return false;
+    }
     return true;
   }
 }

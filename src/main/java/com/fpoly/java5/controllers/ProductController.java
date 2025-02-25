@@ -28,7 +28,7 @@ public class ProductController {
   @Autowired
   ProductJPA productJPA;
 
-  @GetMapping("/products")
+  @GetMapping("/user/products")
   public String productsLayout(Model model){
     List<Product> products = productJPA.findAll();
     model.addAttribute("products", products);

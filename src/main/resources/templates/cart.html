@@ -25,32 +25,38 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="">
-            <td>
-              <div class="d-flex align-items-center">
-                <div class="col-2">
-                  <img src="/images/1736852568088.webp" style="width: 100%;" />
+          <th:block th:each="item : ${items}">
+            <tr class="">
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="col-2">
+                    <img th:src="${'/images/' + item.product.images[0].image}" style="width: 100%;" />
+                  </div>
+                  <div class="d-flex flex-column col-9 ps-2">
+                    <h2 th:text="${item.product.name}">Name</h2>
+                    <p class="mt-2 text-danger" th:text="${item.product.price}">10.000VND</p>
+                  </div>
                 </div>
-                <div class="d-flex flex-column col-9 ps-2">
-                  <h2>Name</h2>
-                  <p class="mt-2 text-danger">10.000VND</p>
+              </td>
+              <td>
+                <div class="d-flex gap-5 align-items-center">
+                  <a class="btn btn-danger p-3 w-auto" href="#" role="button">-</a>
+                  <input class="col-6" placeholder="quantity" th:value="${item.quantity}"/>
+                  <a class="btn btn-primary p-3 w-auto" href="#" role="button">+</a>
                 </div>
-              </div>
-            </td>
-            <td>
-              <div class="d-flex gap-5 align-items-center">
-                <a class="btn btn-danger p-3 w-auto" href="#" role="button">-</a>
-                <input class="col-6" placeholder="quantity" value="1"/>
-                <a class="btn btn-primary p-3 w-auto" href="#" role="button">+</a>
-              </div>
-            </td>
-            <td>
-              <h2 class="text-danger">10.000VND</h2>
-            </td>
-            <td>
-              <a class="btn btn-danger" href="#" role="button">Remove</a>
-            </td>
-          </tr>
+              </td>
+              <td>
+                <h2 class="text-danger" th:text="${item.product.price * item.quantity}">10.000VND</h2>
+              </td>
+              <td>
+                <form action="/user/delete-cart-item" method="post">
+                  <input type="hidden" th:value="${item.id}" name="cartItemId"/>
+                  <input class="btn btn-primary w-auto" type="submit" value="Remove" />
+
+                </form>
+              </td>
+            </tr>
+          </th:block>
         </tbody>
       </table>
     </div>
